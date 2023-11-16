@@ -32,7 +32,7 @@ export class AppService {
     AddCompaniesDetails = (reqData : any) =>{
         let data = JSON.stringify(reqData)
         console.log("======== reqData",reqData)
-        return this.http.post<any>('https://crm-backend-oebb.onrender.com/create',data,this.httpOptions);
+        return this.http.post<any>('https://crm-backend-oebb.onrender.com/companies/create',data,this.httpOptions);
     }
     
 }
