@@ -1,0 +1,21 @@
+<div class="header">
+    <span class="mr-auto"><b>noCnX Technologies</b></span> 
+    <button mat-button [matMenuTriggerFor]="contacts">Contacts</button>
+    <mat-menu #contacts="matMenu" yPosition="below">
+        <button mat-menu-item >Companies</button>
+        <button mat-menu-item >Contacts</button>
+    </mat-menu>
+
+    <button mat-button >Quotations</button>
+
+    <button mat-button >Projects</button>
+
+    <mat-icon class="user-icon ml-auto">account_circle</mat-icon>
+    <span>user</span>
+</div>
+
+<!-- <span><b>noCnX Technologies</b></span>
+<div class="spacer"></div>
+
+<mat-icon class="user-icon">account_circle</mat-icon>
+<span>user</span> -->

@@ -1,0 +1,57 @@
+.header{
+    /* position: absolute; */
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 55px;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 4px 10px;
+}
+
+.spacer{
+    flex: 1;
+}
+
+.user-icon{
+    padding: 0px 5px;
+}
+
+.example-container {
+    width: 500px;
+    height: 300px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+  }
+  
+  .example-sidenav-content {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .example-sidenav {
+    padding: 20px;
+  }
+
+  #create-customer-form{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+  }
+
+  .customer-table{
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .mr-auto{
+    margin-right: auto;
+  }
+
+  .ml-auto{
+    margin-left: auto;
+  }

@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>Create customer</h1>
+<div mat-dialog-content id="create-customer-form">
+  <mat-form-field>
+    <mat-label>Company name</mat-label>
+    <input matInput [(ngModel)]="data.name">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Contact person</mat-label>
+    <input matInput [(ngModel)]="data.contactPerson">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Location of business</mat-label>
+    <input matInput [(ngModel)]="data.location">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput [(ngModel)]="data.email">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Currency</mat-label>
+    <mat-select [(ngModel)] = "data.currency">
+        <mat-option [value]="code" *ngFor="let code of ValidCurrencyCode">{{code}}</mat-option>
+      </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+</div>
