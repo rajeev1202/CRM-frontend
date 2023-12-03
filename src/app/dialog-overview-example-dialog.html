@@ -17,10 +17,14 @@
     <input matInput [(ngModel)]="data.email">
   </mat-form-field>
   <mat-form-field>
+    <mat-label>Phone number</mat-label>
+    <input matInput [(ngModel)]="data.phoneNumber">
+  </mat-form-field>
+  <mat-form-field>
     <mat-label>Currency</mat-label>
-    <mat-select [(ngModel)] = "data.currency">
-        <mat-option [value]="code" *ngFor="let code of ValidCurrencyCode">{{code}}</mat-option>
-      </mat-select>
+    <mat-select [(ngModel)]="data.currency">
+      <mat-option [value]="code" *ngFor="let code of ValidCurrencyCode">{{code}}</mat-option>
+    </mat-select>
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
