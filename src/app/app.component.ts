@@ -12,8 +12,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { AppService } from './services/app-service';
 import { CommonModule } from '@angular/common';
-import { VALID_CURRENCY_CODE } from '../constants';
-import { CustomerTable } from './interfaces';
+import { VALID_CURRENCY_CODE,VALID_TAXATION } from '../constants';
+import { CustomerTable, ContactsInterface } from './interfaces';
 
 @Component({
   selector: 'app-root',
@@ -49,27 +49,31 @@ export class AppComponent implements OnInit {
     phoneNumber: '',
   };
 
-  openDialog(): void {
+  contactsForm = {
+    name: '',
+    email: '',
+    phoneNumber: '',
+    employedWith: '',
+    positionInOrg: '',
+    note: ''
+
+  }
+
+  openCustomerDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
       data: this.customerForm,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed', result);
-      this.resetForm();
-      let emails = result.email.split(',').map((data: string) => data.trim());
-      let phoneNumber = result.phoneNumber
-        .split(',')
-        .map((data: string) => data.trim());
-      console.log('emails', emails, '==phonenumber', phoneNumber);
+      this.resetCompaniesForm();
       result.email = result.email.split(',').map((data: string) => data.trim());
       result.phoneNumber = result.phoneNumber
         .split(',')
         .map((data: string) => data.trim());
+      result.contactPerson = result.contactPerson ? result.contactPerson._id : "";
       this.appservice
-        .AddCompaniesDetails(result)
+        .addCompaniesDetails(result)
         .subscribe(async (data: any) => {
-          console.log('new company details got saved');
           if (data) {
             await this.getCompaines();
           }
@@ -77,14 +81,42 @@ export class AppComponent implements OnInit {
     });
   }
 
+  openContactsDialog(){
+    const contactFormRef = this.dialog.open( contactsForms, {
+      data: this.contactsForm
+    })
+    contactFormRef.afterClosed().subscribe((result) => {
+      this.resetContactsForm();
+      // save new contact and reset the form
+      let emails = result.email.split(',').map((data: string) => data.trim());
+      let phoneNumber = result.phoneNumber
+        .split(',')
+        .map((data: string) => data.trim());
+      result.email = result.email.split(',').map((data: string) => data.trim());
+      result.phoneNumber = result.phoneNumber
+        .split(',')
+        .map((data: string) => data.trim());
+        this.appservice.saveNewContact(result)
+        .subscribe(async (data:any) => {
+          if(data){
+            return;
+          }
+        })
+    } )
+  }
   getCompaines = () => {
     this.appservice.getAllCompanies().subscribe((data: CustomerTable[]) => {
-      console.log('= === companies data', data);
       this.customer_Table = data;
     });
   };
 
-  resetForm = () => {
+  // getContacts = () => {
+  //   this.appservice.getAllContacts().subscribe((data : ContactsInterface[]) => {
+  //     // this.contactsData = data;
+  //   })
+  // }
+
+  resetCompaniesForm = () => {
     this.customerForm = {
       name: '',
       contactPerson: '',
@@ -92,6 +124,17 @@ export class AppComponent implements OnInit {
       currency: '',
       email: '',
       phoneNumber: '',
+    };
+  };
+
+  resetContactsForm = () => {
+    this.contactsForm = {
+      name: '',
+      email: '',
+      phoneNumber: '',
+      employedWith: '',
+      positionInOrg: '',
+      note: ''
     };
   };
 }
@@ -111,14 +154,58 @@ export class AppComponent implements OnInit {
     CommonModule,
   ],
 })
-export class DialogOverviewExampleDialog {
+export class DialogOverviewExampleDialog implements OnInit {
+  contactsData : ContactsInterface[] = []
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    private appservice: AppService,
     @Inject(MAT_DIALOG_DATA) public data: CustomerTable
   ) {}
 
   ValidCurrencyCode = VALID_CURRENCY_CODE;
+  VALID_TAXATION = VALID_TAXATION;
+
+  ngOnInit(): void {
+    this.getContacts()
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+  getContacts = () => {
+    this.appservice.getAllContacts().subscribe((data : ContactsInterface[]) => {
+      this.contactsData = data;
+    })
+  }
+}
+
+
+@Component({
+  selector: 'contacts-form',
+  templateUrl: 'contacts-form.html',
+  styleUrls: ['./app.component.css'],
+  standalone: true,
+  imports: [
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    MatSelectModule,
+    CommonModule,
+  ],
+})
+
+export class contactsForms {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: ContactsInterface
+  ){}
+
+  hideForm(){
+    this.dialogRef.close();
+  }
+
 }

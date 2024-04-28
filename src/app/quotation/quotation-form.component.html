@@ -1,0 +1,99 @@
+<h1 mat-dialog-title>Fill quotation data</h1>
+<div mat-dialog-content id="create-quotation-form" [formGroup]="quotationForm">
+  <mat-form-field>
+    <mat-label>Quotation Number</mat-label>
+    <input matInput formControlName="quotationNumber">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>For company</mat-label>
+    <mat-select formControlName="companyId">
+      <mat-option [value]="company.id" *ngFor="let company of companyList">{{company.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Project Name</mat-label>
+    <textarea matInput formControlName="projectName"></textarea>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Submitted To</mat-label>
+    <input matInput id="submittedTo" formControlName="submittedTo">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>SOW number</mat-label>
+    <input matInput id="sowNumber" formControlName="sowNumber">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Division of work</mat-label>
+    <input matInput id="divisionOfWork" formControlName="divisionOfWork">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Revision number</mat-label>
+    <input matInput id="revisionNumber" formControlName="revisionNumber">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Currency</mat-label>
+    <mat-select formControlName="currency">
+      <mat-option [value]="currency" *ngFor="let currency of ValidCurrencyCode">{{currency}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Choose Quotation date</mat-label>
+    <input matInput [matDatepicker]="picker1" formControlName="dateOfQuotation">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+  <!-- <mat-form-field>
+    <mat-label>Choose Expiry date</mat-label>
+    <input matInput [matDatepicker]="picker2" formControlName="expiryDate">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+    <mat-datepicker #picker2></mat-datepicker>
+  </mat-form-field> -->
+  <div style="margin-top: 20px;" formArrayName="inputDocReceived" *ngFor="let doc of inputDocReceived.controls; let i=index">
+    <div [formGroupName]="i">
+      <div style="padding-left: 10px;"><b>{{'Input' + ' ' + (i+1)}}</b></div>
+      <mat-form-field style="display: block;">
+        <mat-label>Doc name</mat-label>
+        <input matInput id="inputDoc-{{ i }}" formControlName="name">
+      </mat-form-field>
+    </div>
+  </div>
+  <div style="margin-bottom: 20px;">
+    <button mat-button (click)="addInputDocReceived()">+ Add Input received </button>
+  </div>
+  <div formArrayName="activities" *ngFor="let activity of activities.controls;let i=index">
+    <div [formGroupName]="i">
+      <div style="padding-left: 10px;"><b>{{'Activity' + ' ' + (i+1) }}</b></div>
+      <mat-form-field style="display: block;">
+        <mat-label>Name</mat-label>
+        <input matInput id="activityname-{{ i }}" formControlName="name">
+      </mat-form-field>
+      <mat-form-field style="display: block;">
+        <mat-label>ratePerHour</mat-label>
+        <input matInput id="activityrateperHour-{{ i }}" formControlName="ratePerHrs">
+      </mat-form-field>
+      <mat-form-field style="display: block;">
+        <mat-label>Working hours</mat-label>
+        <input matInput id="activityWorkingHrs-{{ i }}" formControlName="workingHrs">
+      </mat-form-field>
+      <section>
+        <mat-checkbox id="activityIsDiscountApplied-{{ i }}" formControlName="isDiscountApplied">Discount applicable</mat-checkbox>
+      </section>
+      <mat-form-field style="display: block;" *ngIf="getSubItems(i, 'isDiscountApplied')">
+        <mat-label>Discount percentage(%)</mat-label>
+        <input matInput id="activityDiscountPercentage-{{ i }}" formControlName="discountPercentage">
+      </mat-form-field>
+      <span *ngIf="getSubItems(i, 'isDiscountApplied') && getSubItems(i, 'discountPercentage')">{{ '$'+ getDiscountedPrice(getSubItems(i, 'ratePerHrs'), getSubItems(i, 'workingHrs'),getSubItems(i, 'discountPercentage'))}}</span>
+    </div>
+  </div>
+  <div style="margin-bottom: 20px;">
+    <button mat-button (click)="addActivities()">+ Add Activities </button>
+  </div>
+  <div>{{quotationForm.value | json}}</div>
+  <div>{{getSubItems(0, 'isDiscountApplied')}}</div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onDiscard()">Cancel</button>
+    <button mat-button [mat-dialog-close]="quotationForm.value" cdkFocusInitial>Save</button>
+  </div>
+</div>

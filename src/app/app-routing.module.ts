@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DialogOverviewExampleDialog } from './app.component';
-import { HeaderComponent } from './header/header.componet';
+import { QuotationComponent } from './quotation/quotation.component';
 
 const routes: Routes = [
-  // {
-  //   path: 'companies',
-  //   component: HeaderComponent
-  // },
+  {
+    path: 'quotation',
+    component:  QuotationComponent
+  },
 
 ];
 

@@ -8,8 +8,9 @@
     </div> -->
     <app-header></app-header>
     <div style="padding: 10px 5px;margin-left: auto;">
-        <button mat-raised-button (click)="openDialog()">Add customer</button>
-    </div>
+        <button mat-raised-button (click)="openCustomerDialog()">Add customer</button>
+        <button style="margin-left: 30px;" mat-raised-button (click)="openContactsDialog()">Add contacts</button>
+     </div>
     <div class="customer-table">
         <table mat-table [dataSource]="customer_Table" class="mat-elevation-z8">
             <ng-container matColumnDef="customer name">

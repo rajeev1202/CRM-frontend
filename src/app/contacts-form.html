@@ -1,0 +1,31 @@
+<h1 mat-dialog-title> Create contact </h1>
+<div mat-dialog-content id="create-contact-form">
+    <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="data.name">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="data.email">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Phone number</mat-label>
+        <input matInput [(ngModel)]="data.phoneNumber">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Employed with</mat-label>
+        <input matInput [(ngModel)]="data.employedWith">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Role in org</mat-label>
+        <input matInput [(ngModel)]="data.positionInOrg">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Note</mat-label>
+        <input matInput [(ngModel)]="data.note">
+      </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="hideForm()">Cancel</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+  </div>

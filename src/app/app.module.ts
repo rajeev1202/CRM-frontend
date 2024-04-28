@@ -16,10 +16,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppService } from './services/app-service';
 import { HeaderComponent } from './header/header.componet';
 import { ReactiveFormsModule } from '@angular/forms';
+import { QuotationComponent } from './quotation/quotation.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
     AppComponent,
+    QuotationComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +41,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatTableModule,
     HttpClientModule,
     HeaderComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule
   ],
   providers: [ AppService ],
   bootstrap: [AppComponent]
