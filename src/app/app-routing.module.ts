@@ -1,8 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { QuotationComponent } from './quotation/quotation.component';
+import { CompaniesComponent } from './companies/companies.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    component:  CompaniesComponent
+  },
   {
     path: 'quotation',
     component:  QuotationComponent

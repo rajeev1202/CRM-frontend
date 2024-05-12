@@ -20,11 +20,13 @@ import { QuotationComponent } from './quotation/quotation.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { CompaniesComponent } from './companies/companies.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     QuotationComponent,
+    CompaniesComponent,
   ],
   imports: [
     BrowserModule,
