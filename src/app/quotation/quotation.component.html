@@ -1,4 +1,5 @@
 <!-- <h1>quotation works!</h1> -->
+<div style="margin: 16px;">
 <button mat-raised-button style="margin-left: 30px;" (click)="openQuotationForm()">generate Quotation</button>
 <div id="htmlData" class="container" *ngIf="quotationsData" style="height: 1300mm;width: 210mm;border: 1px solid;margin: auto;">
   <div class="pdf-content" style="background-image: url('../../assets/images/new-quotation-bg-img.png');background-size: cover; width: 595pt;height: 842pt; position: relative;">
@@ -19,7 +20,7 @@
         <p class="fw-500">Director- Global Business</p>
         <p class="fw-500" style="margin-bottom: 2px;">noCnX Technologies</p>
         <div>
-          <p>Delivery office: Kul Ecoloch Towers, office no-503, <br> Building 4B, Pune – 411045, INDIA <br>Mobile: (+91) 8605621119<br> Email: accounts@nocnx.com</p>
+          <p>Delivery office: Kul Ecoloch Towers, office no-503, <br> Building 4B, Pune – 411045, INDIA <br>Mobile: (+91) 8605621119<br> Email: accounts&#64;nocnx.com</p>
           <a href="https://www.nocnx.com">https://www.nocnx.com</a>
         </div>
       </div>
@@ -320,3 +321,4 @@
   <div class="col-md-4 text-right">
     <button class="btn btn-success btn-block" (click)="convertToPDF()">Download PDF</button>
   </div>
+</div>
