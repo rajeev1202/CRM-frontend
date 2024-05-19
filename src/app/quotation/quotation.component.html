@@ -1,324 +1,41 @@
 <!-- <h1>quotation works!</h1> -->
-<div style="margin: 16px;">
-<button mat-raised-button style="margin-left: 30px;" (click)="openQuotationForm()">generate Quotation</button>
-<div id="htmlData" class="container" *ngIf="quotationsData" style="height: 1300mm;width: 210mm;border: 1px solid;margin: auto;">
-  <div class="pdf-content" style="background-image: url('../../assets/images/new-quotation-bg-img.png');background-size: cover; width: 595pt;height: 842pt; position: relative;">
-    <div  style="padding: 10px 50px;" class="cover-logo"><img height="65px" src="../../assets/images/new2-nocnx-logo.png"></div>
-      <div style="margin: 30px;">
-        <h1 style="border-bottom: 1px solid darkblue; font-weight: bold; color: darkblue; width: fit-content;">{{quotationsData.projectName}}</h1>
-        <p class="font-medium">{{ "Proposal no :- " + quotationsData.quotationNumber}}</p>
-        <div class="font-medium">
-        <p class="mb-2">Submitted To</p>
-        <span class="font-black-bold">{{quotationsData.submittedTo}}</span>
-        <p class="font-black-bold">{{quotationsData.companyName}}</p>          
-        </div>
-        <p>{{'Date: ' +  quotationsData.shortQuoteDate}}</p>
-      </div>
-      <div style="text-align: right; position: absolute; right: 50px; bottom: 80px;text-align: end;">
-        <p class="italic-text fw-500" style="margin-bottom: 2px;">Contact Details:</p>
-        <p class="italic-text fw-500" style="margin-bottom: 2px;">Mrs. Sasmita Baral</p>
-        <p class="fw-500">Director- Global Business</p>
-        <p class="fw-500" style="margin-bottom: 2px;">noCnX Technologies</p>
-        <div>
-          <p>Delivery office: Kul Ecoloch Towers, office no-503, <br> Building 4B, Pune – 411045, INDIA <br>Mobile: (+91) 8605621119<br> Email: accounts&#64;nocnx.com</p>
-          <a href="https://www.nocnx.com">https://www.nocnx.com</a>
-        </div>
-      </div>
-  </div>
+<div style="margin: 16px">
+  <div class="customer-table" style="margin-bottom: 16px;">
+    <table mat-table [dataSource]="quotationList" class="mat-elevation-z8">
+        <ng-container matColumnDef="Quotation Number">
+            <th mat-header-cell *matHeaderCellDef>Quotation Number</th>
+            <td mat-cell *matCellDef="let element">{{element.quotationNumber}}</td>
+        </ng-container>
+        <ng-container matColumnDef="Company Name">
+          <th mat-header-cell *matHeaderCellDef>Company Name</th>
+          <td mat-cell *matCellDef="let element">{{element.companyDetails[0].name}}</td>
+        </ng-container>
+        <ng-container matColumnDef="Project Name">
+            <th mat-header-cell *matHeaderCellDef>Project Name</th>
+            <td mat-cell *matCellDef="let element">{{element.projectName}}</td>
+        </ng-container> <ng-container matColumnDef="Submitted To">
+            <th mat-header-cell *matHeaderCellDef>Submitted To</th>
+            <td mat-cell *matCellDef="let element">{{element.submittedTo}}</td>
+        </ng-container>
+        <ng-container matColumnDef="Date Of Quotation">
+            <th mat-header-cell *matHeaderCellDef>Date of Quotation</th>
+            <td mat-cell *matCellDef="let element">{{element.dateOfQuotation}}</td>
+        </ng-container>
+        <ng-container matColumnDef="Quoatation">
+          <th mat-header-cell *matHeaderCellDef>Quoatation</th>
+          <td mat-cell *matCellDef="let element"><button mat-button (click)="openViewQuotation(element)">View</button>
+          </td>
+      </ng-container>
 
-  <div  class="pdf-content" style="display: flex; flex-direction: column; width: 595pt;height:842pt; box-sizing: border-box; padding: 20px;">
-    <div class="cover-logo" style="padding: 10px;">
-      <img height="65px" src="../../assets/images/new2-nocnx-logo.png">
-    </div>
-    <table style="border-collapse: collapse; border: 1px solid; margin-bottom: 20px;">
-      <tr style="border-bottom: 1px solid;">
-        <td>Requested by: Name of the client</td>
-        <td>Division: {{quotationsData.divisionOfWork}}</td>
-      </tr>
-      <tr style="border-bottom: 1px solid;">
-        <td>Date of Quote: {{quotationsData.dateOfQuotation}}</td>
-        <td>Date of initiation : After receipt of P.O</td>
-      </tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
     </table>
-    <div>
-      <p style="text-decoration: underline;"><b>1. Inputs received from {{quotationsData.companyName}}</b></p>
-      <ul>
-        <li *ngFor="let data of quotationsData.inputDocReceived; let i= index">{{data.name}}</li>
-      </ul>
-    </div>
-    <div>
-      <p style="text-decoration: underline;"><b>2. Project scope</b></p>
-      <p>{{ 'Please refer the "' + quotationsData.sowNumber + '" scope document attached with Quote.' }}</p>
-    </div>
-    <div>
-      <p style="text-decoration: underline;"><b>3.	Project Cost and Timeline</b></p>
-      <table style="border-collapse: collapse;border: 1px solid; width: 100%;margin-bottom: 20px; text-align: center;">
-        <tr style="border: 1px solid;">
-          <th style="border: 1px solid;">sr no</th>
-          <th style="border: 1px solid;">Description</th>
-          <th style="border: 1px solid;">Working Hrs</th>
-          <th style="border: 1px solid;">{{'Base Cost( ' + quotationsData.currency + ' )'}}</th>
-          <th *ngIf="quotationsData.isDiscountApplied" style="border: 1px solid;">{{ 'Discounted Cost( ' + quotationsData.currency + ' )'}}</th>
-        </tr>
-        <tr *ngFor="let activity of quotationsData.activities; let i=index">
-          <td style="border: 1px solid;">{{i+1}}</td>
-          <td style="border: 1px solid;">{{activity.name}}</td>
-          <td style="border: 1px solid;" >{{activity.workingHrs}}</td>
-          <td style="border: 1px solid;">{{quotationsData.currency +' ' +  (activity.ratePerHrs *  activity.workingHrs)}}</td>
-          <td style="border: 1px solid;" *ngIf="activity.isDiscountApplied">{{ quotationsData.currency + (activity.ratePerHrs *  activity.workingHrs* - activity.ratePerHrs *  activity.workingHrs* activity.discountPercentage/100 )}}</td>
-        </tr>
-      </table>
-      <p>Each design iteration will add 40-60% of total cost. Cost will depend on complexity and percentage model changes.</p>
-      <ol class="" type="A">
-        <li><b style="text-decoration: underline;">Taxes:</b>  Applicable taxes will be charged extra on quoted rates. The above-mentioned cost of the project is exclusive of any taxes and duties, which will be added to the billed amount at such rates and amounts as may be applicable from time to time on the services rendered.</li>
-        <li><b style="text-decoration: underline;">INVOICE & PAYMENT TERM:</b></li>
-        <ol type="a">
-          <li>40% advance along with PO.</li>
-          <li>GST of 18% is applicable and will be charged extra on above quoted price.</li>
-          <li>Balance amount after the results are shared and Customer approval. </li>
-          <li>Payment to be made within 15 days of submission of invoice to customer</li>
-          <li>We follow digital invoice submission. So hard copies will not be submitted. Digitally signed invoice will be submitted.</li>
-          <li>Confirmation of receipt of invoice and confirmation of accurate details for further process shall be given by authorized person after our submission</li>
-        </ol>
-      </ol>
-      <!-- <ol class="experiment" style="list-style: none;">
-        <li><b style="text-decoration: underline;">Taxes:</b>  Applicable taxes will be charged extra on quoted rates. The above-mentioned cost of the project is exclusive of any taxes and duties, which will be added to the billed amount at such rates and amounts as may be applicable from time to time on the services rendered.</li>
-        <li><b style="text-decoration: underline;">INVOICE & PAYMENT TERM:</b></li>
-        <ol style="list-style: none;">
-          <li>a. 40% advance along with PO.</li>
-          <li>b. GST of 18% is applicable and will be charged extra on above quoted price.</li>
-          <li>c. Balance amount after the results are shared and Customer approval. </li>
-          <li>d. Payment to be made within 15 days of submission of invoice to customer</li>
-          <li>e. We follow digital invoice submission. So hard copies will not be submitted. Digitally signed invoice will be submitted.</li>
-          <li>f. Confirmation of receipt of invoice and confirmation of accurate details for further process shall be given by authorized person after our submission</li>
-        </ol>
-      </ol> -->
-    </div>
-    <div>
-      <p style="text-decoration: underline;"><b>4.	TERMS & CONDITIONS</b></p>
-      <ol type="A" style="margin-bottom: 30px;">
-        <li>Purchase Order & Payment shall be issued to <b class="underline">“noCnX”</b>.</li>
-        <li>This is marketing promotional offer and cannot be compared/referenced with regular offers.</li>
-        <li>Sign-off for input/approvals/queries required sheet wise / part wise / module wise with progressive work.</li>
-        <li>Any work after sign-off will be charged extra and payable pro-rate basis.</li>
-        <li>This quote is valid until 15 days from date of quotation.</li>
-        <!-- <li><b>Out Of Scope:-</b></li>
-        <ol type="1">
-          <li>Any scope, other than mentioned in this quotation & its annexure are excluded from scope of work and estimation of efforts.</li>
-          <li>In case Client wants to add any changes in SOR, <b class="underline">noCnX</b> will amend this Proposal accordingly.</li>
-        </ol>
-        <li>For security part we propose to have server base control & intranet with good firewall, but we are not responsible for any hacking due to any reason.</li>
-        <li>Functionality issues related to IT infrastructure at client premises. <b class="underline">noCnX</b> cannot identify problems arises due to security policy, user rights, firewalls, anti-virus etc.</li>
-        <li>NON HIRE: Unless otherwise agreed to by both the parties in writing, during the term of this agreement and one years thereafter, <b class="underline">CLIENT</b> shall not directly or indirectly through ant third party solicit, hire or otherwise retain as an employee or independent contractor an employee or former employee of <b class="underline">noCnX</b> who performed the services under this agreement, unless Customer first obtains <b class="underline">noCnX’s</b> written permission thereto.</li>
-        <li><b>TERMINATION OF CONTRACT: </b>Customer will provide 10 calendar days advance formal intimation to noCnX about the termination due to convenience. <b class="underline">CLIENT</b> shall compensate <b class="underline">noCnX </b> in the event of terminating the project due to unavoidable circumstances. The basis for the compensation includes:</li>
-        <ol type="1">
-          <li>Cost incurred in investment towards tools, travels, development platform, materials, tools, equipment’s etc.</li>
-          <li>Efforts that have gone into the project till the date of termination.</li>
-          <li>Four weeks of the Idling cost for the resources deployed at the point of intimation of termination.</li>
-        </ol>
-        <li><b>ROTATION POLICY</b>The resources engaged in projects are bound for re-deployment in other project activities of <b class="underline">noCnX</b>, after a certain minimum specified time according to the HR policy in force at the time. However, <b class="underline">noCnX</b> shall consider continuation of the same resources in the long-term project assignments under exceptional cases based on requests from <b class="underline">CLIENT</b>.</li>
-        <li>Payments are necessary to be on time, if delayed then whole project will be delayed accordingly. To complete the project at committed dates <b class="underline">CLIENT & noCnX</b> both shall give priority to their respective project efforts.</li>
-        <li>Our delivery may delay due to unresponsive act from <b class="underline">CLIENT</b>. We have considered <b class="underline">CLIENT’s</b> response time for any query/feedback/approvals by next working day. Any delay in response beyond it may result in idle time by noCnX team, which may result into schedule & cost variance.</li>
-        <li>Acceptance of this quotation is required for all points mentioned inside including annexure. <b class="underline">noCnX & CLIENT </b>shall jointly discuss, modify and finalize for all points. It is required to mention acceptance of this quotation purchase order for future reference.</li>
-        <li><b>FORCE MAJEURE:</b> Neither Party shall be responsible for damages caused by delay or failure to perform in full or in part of its obligations hereunder, provided that there is due diligence in attempted performance under the circumstances and that such delay or failure is due to one or more events constituting force majeure, including but not limited to fire, flood, earthquake, explosion, accident, acts of God, war whether declared or not, riot, strike, lockout or other concerted acts of workmen, acts of the Government or any circumstances of whatever nature beyond the control of the concerned party. If the force majeure situation continues for more than one (1) month, the Parties hereto shall meet and discuss the ways and means of resolving the situation. Notwithstanding the foregoing clause, a delay in performance due to an event of force majeure shall be excluded only so long as the event continues.</li> -->
-      </ol>
-    </div>
-  </div>
-  <div class="pdf-content" style="width: 595pt;height: 842pt;">
-    <div class="cover-logo" style="padding: 10px;">
-      <img height="65px" src="../../assets/images/new2-nocnx-logo.png">
-    </div>
-    <ol  type="A" start="6">
-      <li><b>Out Of Scope:-</b></li>
-      <ol type="1">
-        <li>Any scope, other than mentioned in this quotation & its annexure are excluded from scope of work and estimation of efforts.</li>
-        <li>In case Client wants to add any changes in SOR, <b class="underline">noCnX</b> will amend this Proposal accordingly.</li>
-      </ol>
-      <li>For security part we propose to have server base control & intranet with good firewall, but we are not responsible for any hacking due to any reason.</li>
-      <li>Functionality issues related to IT infrastructure at client premises. <b class="underline">noCnX</b> cannot identify problems arises due to security policy, user rights, firewalls, anti-virus etc.</li>
-      <li>NON HIRE: Unless otherwise agreed to by both the parties in writing, during the term of this agreement and one years thereafter, <b class="underline">CLIENT</b> shall not directly or indirectly through ant third party solicit, hire or otherwise retain as an employee or independent contractor an employee or former employee of <b class="underline">noCnX</b> who performed the services under this agreement, unless Customer first obtains <b class="underline">noCnX’s</b> written permission thereto.</li>
-      <li><b>TERMINATION OF CONTRACT: </b>Customer will provide 10 calendar days advance formal intimation to noCnX about the termination due to convenience. <b class="underline">CLIENT</b> shall compensate <b class="underline">noCnX </b> in the event of terminating the project due to unavoidable circumstances. The basis for the compensation includes:</li>
-      <ol type="1">
-        <li>Cost incurred in investment towards tools, travels, development platform, materials, tools, equipment’s etc.</li>
-        <li>Efforts that have gone into the project till the date of termination.</li>
-        <li>Four weeks of the Idling cost for the resources deployed at the point of intimation of termination.</li>
-      </ol>
-      <li><b>ROTATION POLICY</b>The resources engaged in projects are bound for re-deployment in other project activities of <b class="underline">noCnX</b>, after a certain minimum specified time according to the HR policy in force at the time. However, <b class="underline">noCnX</b> shall consider continuation of the same resources in the long-term project assignments under exceptional cases based on requests from <b class="underline">CLIENT</b>.</li>
-      <li>Payments are necessary to be on time, if delayed then whole project will be delayed accordingly. To complete the project at committed dates <b class="underline">CLIENT & noCnX</b> both shall give priority to their respective project efforts.</li>
-      <li>Our delivery may delay due to unresponsive act from <b class="underline">CLIENT</b>. We have considered <b class="underline">CLIENT’s</b> response time for any query/feedback/approvals by next working day. Any delay in response beyond it may result in idle time by noCnX team, which may result into schedule & cost variance.</li>
-      <li>Acceptance of this quotation is required for all points mentioned inside including annexure. <b class="underline">noCnX & CLIENT </b>shall jointly discuss, modify and finalize for all points. It is required to mention acceptance of this quotation purchase order for future reference.</li>
-      <li><b>FORCE MAJEURE:</b> Neither Party shall be responsible for damages caused by delay or failure to perform in full or in part of its obligations hereunder, provided that there is due diligence in attempted performance under the circumstances and that such delay or failure is due to one or more events constituting force majeure, including but not limited to fire, flood, earthquake, explosion, accident, acts of God, war whether declared or not, riot, strike, lockout or other concerted acts of workmen, acts of the Government or any circumstances of whatever nature beyond the control of the concerned party. If the force majeure situation continues for more than one (1) month, the Parties hereto shall meet and discuss the ways and means of resolving the situation. Notwithstanding the foregoing clause, a delay in performance due to an event of force majeure shall be excluded only so long as the event continues.</li>
-    </ol>
-  </div>
-  <div class="pdf-content" style="background-image: url('../../assets/images/last-page-bg.png'); background-size: cover; padding: 20px; width: 595pt; height: 842pt; box-sizing: border-box;"> 
-    <div class="cover-logo" style="padding: 10px;">
-      <img height="65px" src="../../assets/images/new2-nocnx-logo.png">
-    </div>
-    <div style="display: flex; justify-content: center; margin-top: 70px; background-color: #3aadcc;">
-      <div style="background-color: white; padding: 40px; margin: 20px;">
-        <div style="margin-bottom: 30px;">
-          <p style="color: blue; text-decoration: underline;"><b>P.O TO BE RAISED ON:</b></p>
-          <p>noCnX Technologies LLP.</p>
-          <p>Delivery office : KulEcoloch, office no-503,</p>
-          <p>Building 4B, Pune – 411045, INDIA</p>
-          <p>Mobile : (+91) 8605621119.</p>
-        </div>
-        <div style="margin-bottom: 30px; border-bottom: 3px solid;">
-          <p style="color: blue; text-decoration: underline;"><b>BANK DETAILS:</b></p>
-          <p>noCnX Technologies Services LLP</p>
-          <p>Account No: -098505009005</p>
-          <p>IFSC: - ICIC0000985</p>
-          <p>Branch: - ICICI Bank, Baner, Pune Maharashtra.</p>
-        </div>
-        <div style="display: flex;justify-content: space-between; align-items: center;">
-          <img height="65px" src="../../assets/images/crm-sign.jpg" alt="Sign of founder">
-          <img width="120px" src="../../assets/images/crm-quotation-stamp.jpg" alt="CRM stamp">
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- <div id="htmlData2" class="container" *ngIf="quotationsData.length" style="height: 800mm;width: 210mm;border: 1px solid;margin: auto;">
-    <div style="display: flex;justify-content: center;align-items: center;flex-direction: column;background-image: url('../../assets/images/quotation-bg-img.png');background-size: cover;width: 595pt;height: 842pt;">
-      <div style="margin-top: 40px;">
-        <h4 style="font-size: 35px;color: yellow;font-weight: 500;margin-bottom: 25px;">noCnX technologies</h4>
-        <h6 style="font-size: 28px;color: white">Solution partner you can count on</h6><br>
-        <div class="font-light-orange">
-          <p style="font-weight: 500;font-size: 21px;text-decoration: underline;margin-bottom: 0px;">{{quotationsData[0].projectDescription}}</p>
-          <p>Quote No- {{quotationsData[0].quotationNo}}<span>(Rev [Revision no.])</span></p>
-          <p style="font-size: 15px;font-weight: 500;margin-bottom: 5px">Submitted to</p>
-          <p style="margin-bottom: 0px;">Client name</p>
-          <p style="margin-bottom: 20px;">Client's company name</p>
-          <p style="font-size: 15px;font-weight: 500;margin-bottom: 5px">Submitted By</p>
-          <p style="margin-bottom: 0px;">noCnX Technologies</p>
-          <p style="margin-bottom: 20px;">Date of day of generation of pdf</p>
-        </div>
-      </div>
-      <div style="font-size: x-small; background-color: white; padding: 8px;">
-        <p style="margin-bottom: 5px;" >contact details</p>
-        <p>
-          Mr. Pinaki Jena <br>
-          Director – Business Developement<br>
-          Reg. Office:Kielruwe 5, 6218 RG, Maastricht,<br>
-          Netherlands. 6221<br>
-          Delivery office: Kul Ecoloch Towers, office no-503,<br>
-          Building 4B, Pune – 411045, INDIA<br>
-          Mobile: (+91) 8605621119<br>
-          Email: pinaki.jena@nocnx.com<br>
-          <a href="https://www.nocnx.com">https://www.nocnx.com</a><br>
-          </p>
-      </div>
-    </div>
-    <div class="row page2"style="display: flex;justify-content: center;flex-direction: column;box-sizing: border-box;padding:20px;">
-      <table style="border-collapse: collapse; border: 1px solid; margin-bottom: 20px;">
-        <tr style="border-bottom: 1px solid;">
-          <td>Requested by: Name of the client</td>
-          <td>Division: Division of project</td>
-        </tr>
-        <tr style="border-bottom: 1px solid;">
-          <td>Date of Quote: Date of quote</td>
-          <td>Date of initiation : After receipt of P.O</td>
-        </tr>
-      </table>
-      <div>
-        <p style="text-decoration: underline;"><b>1. Inputs received from [Company name]</b></p>
-        <ul>
-          <li>scope document</li>
-          <li>CAD</li>
-        </ul>
-      </div>
-      <div>
-        <p style="text-decoration: underline;"><b>2. Project scope</b></p>
-        <p>Please refer the [“SOW (SD27122023)”] scope document attached with Quote.</p>
-      </div>
-      <div>
-        <p style="text-decoration: underline;"><b>3.	Project Cost and Timeline</b></p>
-        <table style="border-collapse: collapse;border: 1px solid; width: 100%;margin-bottom: 20px;">
-          <tr style="border: 1px solid;">
-            <th style="border: 1px solid;">sr no</th>
-            <th style="border: 1px solid;">Description</th>
-            <th style="border: 1px solid;">Working Hrs</th>
-            <th style="border: 1px solid;">Base Cost([currency])</th>
-            <th *ngIf="true" style="border: 1px solid;">Discounted Cost([currency])</th>
-          </tr>
-          <tr>
-            <td style="border: 1px solid;">1</td>
-            <td style="border: 1px solid;">Project description</td>
-            <td style="border: 1px solid;" >80</td>
-            <td style="border: 1px solid;">[currency] 304,000</td>
-            <td style="border: 1px solid;">[currency] 2,30,000</td>
-          </tr>
-        </table>
-        <p>Each design iteration will add 30-50% of total cost. Cost will depend on complexity and percentage model changes.</p>
-        <ol class="" type="A">
-          <li><b style="text-decoration: underline;">COMPLETION TIME: </b> Estimated time to complete the Project is mentioned above.</li>
-          <li><b style="text-decoration: underline;">Simulation Engineers:</b>  Two Simulation Engineers have been considered for this Project.</li>
-          <li><b style="text-decoration: underline;">Taxes:</b>  Applicable taxes will be charged extra on quoted rates. The above-mentioned cost of the project is exclusive of any taxes and duties, which will be added to the billed amount at such rates and amounts as may be applicable from time to time on the services rendered.</li>
-          <li><b style="text-decoration: underline;">INVOICE & PAYMENT TERM:</b></li>
-          <ol type="a">
-            <li>40% advance along with PO.</li>
-            <li>GST of 18% is applicable and will be charged extra on above quoted price..</li>
-            <li>Balance amount after the results are shared and Customer approval. </li>
-            <li>Payment to be made within 15 days of submission of invoice to customer</li>
-            <li>We follow digital invoice submission. So hard copies will not be submitted. Digitally signed invoice will be submitted.</li>
-            <li>Confirmation of receipt of invoice and confirmation of accurate details for further process shall be given by authorized person after our submission</li>
-          </ol>
-        </ol>
-      </div>
-      <div>
-        <p style="text-decoration: underline;"><b>4.	TERMS & CONDITIONS</b></p>
-        <ol type="A" style="margin-bottom: 30px;">
-          <li>Purchase Order & Payment shall be issued to <b class="underline">“noCnX”</b>.</li>
-          <li>This is marketing promotional offer and cannot be compared/referenced with regular offers.</li>
-          <li>Sign-off for input/approvals/queries required sheet wise / part wise / module wise with progressive work.</li>
-          <li>Any work after sign-off will be charged extra and payable pro-rate basis.</li>
-          <li>This quote is valid until 15 days from date of quotation.</li>
-          <li><b>Out Of Scope:-</b></li>
-          <ol type="1">
-            <li>Any scope, other than mentioned in this quotation & its annexure are excluded from scope of work and estimation of efforts.</li>
-            <li>In case Client wants to add any changes in SOR, <b class="underline">noCnX</b> will amend this Proposal accordingly.</li>
-          </ol>
-          <li>For security part we propose to have server base control & intranet with good firewall, but we are not responsible for any hacking due to any reason.</li>
-          <li>Functionality issues related to IT infrastructure at client premises. <b class="underline">noCnX</b> cannot identify problems arises due to security policy, user rights, firewalls, anti-virus etc.</li>
-          <li>NON HIRE: Unless otherwise agreed to by both the parties in writing, during the term of this agreement and one years thereafter, <b class="underline">CLIENT</b> shall not directly or indirectly through ant third party solicit, hire or otherwise retain as an employee or independent contractor an employee or former employee of <b class="underline">noCnX</b> who performed the services under this agreement, unless Customer first obtains <b class="underline">noCnX’s</b> written permission thereto.</li>
-          <li><b>TERMINATION OF CONTRACT: </b>Customer will provide 10 calendar days advance formal intimation to noCnX about the termination due to convenience. <b class="underline">CLIENT</b> shall compensate <b class="underline">noCnX </b> in the event of terminating the project due to unavoidable circumstances. The basis for the compensation includes:</li>
-          <ol type="1">
-            <li>Cost incurred in investment towards tools, travels, development platform, materials, tools, equipment’s etc.</li>
-            <li>Efforts that have gone into the project till the date of termination.</li>
-            <li>Four weeks of the Idling cost for the resources deployed at the point of intimation of termination.</li>
-          </ol>
-          <li><b>ROTATION POLICY</b>The resources engaged in projects are bound for re-deployment in other project activities of <b class="underline">noCnX</b>, after a certain minimum specified time according to the HR policy in force at the time. However, <b class="underline">noCnX</b> shall consider continuation of the same resources in the long-term project assignments under exceptional cases based on requests from <b class="underline">CLIENT</b>.</li>
-          <li>Payments are necessary to be on time, if delayed then whole project will be delayed accordingly. To complete the project at committed dates <b class="underline">CLIENT & noCnX</b> both shall give priority to their respective project efforts.</li>
-          <li>Our delivery may delay due to unresponsive act from <b class="underline">CLIENT</b>. We have considered <b class="underline">CLIENT’s</b> response time for any query/feedback/approvals by next working day. Any delay in response beyond it may result in idle time by noCnX team, which may result into schedule & cost variance.</li>
-          <li>Acceptance of this quotation is required for all points mentioned inside including annexure. <b class="underline">noCnX & CLIENT </b>shall jointly discuss, modify and finalize for all points. It is required to mention acceptance of this quotation purchase order for future reference.</li>
-          <li><b>FORCE MAJEURE:</b> Neither Party shall be responsible for damages caused by delay or failure to perform in full or in part of its obligations hereunder, provided that there is due diligence in attempted performance under the circumstances and that such delay or failure is due to one or more events constituting force majeure, including but not limited to fire, flood, earthquake, explosion, accident, acts of God, war whether declared or not, riot, strike, lockout or other concerted acts of workmen, acts of the Government or any circumstances of whatever nature beyond the control of the concerned party. If the force majeure situation continues for more than one (1) month, the Parties hereto shall meet and discuss the ways and means of resolving the situation. Notwithstanding the foregoing clause, a delay in performance due to an event of force majeure shall be excluded only so long as the event continues.</li>
-        </ol>
-        <div style="margin-bottom: 30px;">
-          <p style="color: blue; text-decoration: underline;"><b>P.O TO BE RAISED ON:</b></p>
-          <p>noCnX Technologies LLP.</p>
-          <p>Delivery office : KulEcoloch, office no-503,</p>
-          <p>Building 4B, Pune – 411045, INDIA</p>
-          <p>Mobile : (+91) 8605621119.</p>
-        </div>
-        <div style="margin-bottom: 30px; border-bottom: 3px solid;">
-          <p style="color: blue; text-decoration: underline;"><b>BANK DETAILS:</b></p>
-          <p>noCnX Technologies Services LLP</p>
-          <p>Account No: -098505009005</p>
-          <p>IFSC: - ICIC0000985</p>
-          <p>Branch: - ICICI Bank, Baner, Pune Maharashtra.</p>
-        </div>
-      </div>
-      <div style="display: flex;justify-content: space-between;">
-        <img height="85px" src="../../assets/images/crm-sign.jpg" alt="Sign of founder">
-        <img width="190px" src="../../assets/images/crm-quotation-stamp.jpg" alt="CRM stamp">
-      </div>
-    </div>
-  </div> -->
-
-  
-
-
-  <div class="col-md-4 text-right">
-    <button class="btn btn-success btn-block" (click)="convertToPDF()">Download PDF</button>
-  </div>
+  <button
+    mat-raised-button
+    style="margin-top: 30px"
+    (click)="openQuotationForm()"
+  >
+    generate Quotation
+  </button>
 </div>

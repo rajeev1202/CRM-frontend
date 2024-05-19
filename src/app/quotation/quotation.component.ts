@@ -1,9 +1,16 @@
-import { Component, Inject, OnInit , ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnInit,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import {
   MatDialog,
   MAT_DIALOG_DATA,
   MatDialogRef,
   MatDialogModule,
+  MatDialogConfig,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, FormGroup, FormArray } from '@angular/forms';
@@ -13,29 +20,38 @@ import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { VALID_CURRENCY_CODE } from '../../constants';
 import { QuotationForm } from '../interfaces';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { AppService } from '../services/app-service';
-import { ReactiveFormsModule,FormBuilder } from '@angular/forms';
-
+import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { PdfViewerDialogComponent } from '../pdf-viewer-dialog/pdf-viewer-dialog.component';
 
 @Component({
   selector: 'app-quotation',
   templateUrl: './quotation.component.html',
-  styleUrls: ['../app.component.css']
+  styleUrls: ['../app.component.css'],
 })
 export class QuotationComponent implements OnInit {
-
   @ViewChild('htmlData') htmlData!: ElementRef;
-  quotationsData:any  = [];
-
-  constructor( public dialog: MatDialog, public appService: AppService ){}
+  quotationsData: any = [];
+  quotationList: any = [];
+  displayedColumns: string[] = [
+    'Quotation Number',
+    'Company Name',
+    'Project Name',
+    'Submitted To',
+    'Date Of Quotation',
+    'Quoatation'
+  ];
+  selectRow: any;
+  constructor(public dialog: MatDialog, public pdfDialog: MatDialog, public appService: AppService) {}
 
   ngOnInit(): void {
-    this.getQuotationData();
+    this.getQuotationList();
+    // this.getQuotationData();
   }
 
   quotationForm = {
@@ -46,8 +62,8 @@ export class QuotationComponent implements OnInit {
     ratePerHour: '',
     estimatedHours: '',
     estimateDate: '',
-    expiryDate: ''
-  }
+    expiryDate: '',
+  };
 
   openPDF(): void {
     let DATA: any = document.getElementById('htmlData');
@@ -58,41 +74,15 @@ export class QuotationComponent implements OnInit {
       let PDF = new jsPDF('p', 'mm', 'a4');
       let position = 0;
       var opt = {
-        margin: 1, 
+        margin: 1,
         filename: 'ontract.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: {scale:2 },
+        html2canvas: { scale: 2 },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-        pagebreak: { mode: 'avoid-all', after: '.avoidThisRow' }       
-    };
+        pagebreak: { mode: 'avoid-all', after: '.avoidThisRow' },
+      };
       PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
       PDF.save(this.quotationsData.quotationNumber + '.pdf');
-    });
-  }
-
-  convertToPDF() {
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const elements = document.querySelectorAll('.pdf-content');
-  
-    elements.forEach((element :any, index) => {
-      html2canvas(element).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const imgWidth = 210;
-        const pageHeight = 295;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        let heightLeft = imgHeight;
-  
-        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-        while (heightLeft > 0) {
-          pdf.addPage();
-          pdf.addImage(imgData, 'PNG', 0, -heightLeft, imgWidth, imgHeight);
-          heightLeft -= pageHeight;
-        }
-        if (index === elements.length - 1) {
-          pdf.save(this.quotationsData.quotationNumber + '.pdf');
-        }
-      });
     });
   }
 
@@ -100,35 +90,59 @@ export class QuotationComponent implements OnInit {
     const dialogRef = this.dialog.open(QuotationData);
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.appService.createQuotation(result)
-      .subscribe((data:any) => {
-        this.getQuotationData();
-      })
+      this.appService.createQuotation(result).subscribe((data: any) => {
+        // this.getQuotationData();
+        this.getQuotationList();
+      });
     });
   }
 
-  getQuotationData(){
-    this.appService.getAllQuotations()
-    .subscribe((data) => {
-      this.quotationsData = data[0];
-      this.quotationsData['companyName'] = data[0].companyDetails[0].name;
-      const quotationDate = new Date(data[0].dateOfQuotation);
-      this.quotationsData['shortQuoteDate'] = quotationDate.toLocaleString('default',{day:'numeric',month:'long',year:'numeric'})
-      this.quotationsData['isDiscountApplied'] = this.isDiscountApplied(this.quotationsData.activities)
+  // getQuotationData() {
+  //   this.appService.getAllQuotations().subscribe((data) => {
+  //     this.quotationsData = data[0];
+  //     this.quotationsData['companyName'] = data[0].companyDetails[0].name;
+  //     const quotationDate = new Date(data[0].dateOfQuotation);
+  //     this.quotationsData['shortQuoteDate'] = quotationDate.toLocaleString(
+  //       'default',
+  //       { day: 'numeric', month: 'long', year: 'numeric' }
+  //     );
+  //     this.quotationsData['isDiscountApplied'] = this.isDiscountApplied(
+  //       this.quotationsData.activities
+  //     );
+  //   });
+  // }
 
-    })
+  getQuotationList() {
+    this.appService.getAllQuotationsList().subscribe((data) => {
+      this.quotationList = data;
+    });
   }
 
-  isDiscountApplied(activitiesData:any){
-    for(let activity of activitiesData ){
-      if(activity.isDiscountApplied) return true;
+  isDiscountApplied(activitiesData: any) {
+    for (let activity of activitiesData) {
+      if (activity.isDiscountApplied) return true;
     }
     return false;
   }
+
+  openViewQuotation(element: any) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.maxHeight = '90vh';
+
+    dialogConfig.data = element;
+    console.log("open dialog: ", element);
+
+    this.pdfDialog.open(PdfViewerDialogComponent, dialogConfig);
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
+    //   }
+    // });
+  }
 }
-
-
-
 
 @Component({
   selector: 'quotation-form',
@@ -146,19 +160,20 @@ export class QuotationComponent implements OnInit {
     MatDatepickerModule,
     MatNativeDateModule,
     ReactiveFormsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
   ],
 })
 export class QuotationData implements OnInit {
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<QuotationData>,
+    public pdfDialofRef: MatDialogRef<PdfViewerDialogComponent>,
     public appService: AppService
   ) {}
-  companyList :any = []
+  companyList: any = [];
   ValidCurrencyCode = VALID_CURRENCY_CODE;
 
-  quotationForm = this. fb.group({
+  quotationForm = this.fb.group({
     quotationNumber: this.fb.control(''),
     companyId: this.fb.control(''),
     projectName: this.fb.control(''),
@@ -168,25 +183,37 @@ export class QuotationData implements OnInit {
     divisionOfWork: this.fb.control(''),
     revisionNumber: this.fb.control(0),
     dateOfQuotation: this.fb.control(''),
-    inputDocReceived: this.fb.array([ this.fb.group({ name: this.fb.control('') })]), 
-    activities : this.fb.array([this.fb.group({
-      name: this.fb.control(''),
-      workingHrs: this.fb.control( 0 ), 
-      ratePerHrs: this.fb.control( 0 ),
-      isDiscountApplied: this.fb.control(false),
-      discountPercentage: this.fb.control(0),
-    })])
-  
-  })
-
+    inputDocReceived: this.fb.array([
+      this.fb.group({ name: this.fb.control('') }),
+    ]),
+    activities: this.fb.array([
+      this.fb.group({
+        name: this.fb.control(''),
+        workingHrs: this.fb.control(0),
+        ratePerHrs: this.fb.control(0),
+        isDiscountApplied: this.fb.control(false),
+        discountPercentage: this.fb.control(0),
+      }),
+    ]),
+  });
 
   ngOnInit(): void {
     this.getCompanyList();
-    const date = (new Date()).toLocaleString('default',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit',year:'2-digit'}).split(',');
+    const date = new Date()
+      .toLocaleString('default', {
+        hour: '2-digit',
+        minute: '2-digit',
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit',
+      })
+      .split(',');
     const dateComponent = date[0].replaceAll('/', '');
-    const timeComponent = date[1].trim().replaceAll(':', '')
-    
-    this.quotationForm.controls['quotationNumber'].setValue('QN'+dateComponent+timeComponent)
+    const timeComponent = date[1].trim().replaceAll(':', '');
+
+    this.quotationForm.controls['quotationNumber'].setValue(
+      'QN' + dateComponent + timeComponent
+    );
   }
 
   get activities() {
@@ -196,27 +223,25 @@ export class QuotationData implements OnInit {
   get inputDocReceived() {
     return this.quotationForm.get('inputDocReceived') as FormArray;
   }
-  
 
-  getCompanyList ():void {
-    this.appService.getCompaniesList()
-    .subscribe((result) =>{
+  getCompanyList(): void {
+    this.appService.getCompaniesList().subscribe((result) => {
       this.companyList = result;
-    })
+    });
   }
 
-
-
-  addActivities():void{
-    this.activities.push(this.fb.group({
-      name: this.fb.control(''),
-      workingHrs: this.fb.control( 0 ), 
-      currency: this.fb.control(''),
-      ratePerHrs: this.fb.control( 0 ),
-    }))
+  addActivities(): void {
+    this.activities.push(
+      this.fb.group({
+        name: this.fb.control(''),
+        workingHrs: this.fb.control(0),
+        currency: this.fb.control(''),
+        ratePerHrs: this.fb.control(0),
+      })
+    );
   }
-  addInputDocReceived(){
-    this.inputDocReceived.push(this.fb.group({ name: this.fb.control('') }))
+  addInputDocReceived() {
+    this.inputDocReceived.push(this.fb.group({ name: this.fb.control('') }));
   }
   onDiscard(): void {
     this.dialogRef.close();
@@ -226,8 +251,11 @@ export class QuotationData implements OnInit {
     return this.activities.at(itemIndex).get(controlName)?.value;
   }
 
-  getDiscountedPrice(ratePerHour:number, workingHrs: number, percentage:number){
-      return (ratePerHour*workingHrs*percentage)/100;
+  getDiscountedPrice(
+    ratePerHour: number,
+    workingHrs: number,
+    percentage: number
+  ) {
+    return (ratePerHour * workingHrs * percentage) / 100;
   }
-
 }
