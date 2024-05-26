@@ -131,7 +131,12 @@ export class QuotationComponent implements OnInit {
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.maxHeight = '90vh';
-
+    element['companyName'] = element.companyDetails[0].name;
+    let quotationDate = new Date(element.dateOfQuotation);
+    element['shortQuoteDate'] = quotationDate.toLocaleString(
+      'default',
+      { day: 'numeric', month: 'long', year: 'numeric' }
+    );
     dialogConfig.data = element;
     console.log("open dialog: ", element);
 

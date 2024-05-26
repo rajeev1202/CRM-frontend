@@ -11,3 +11,27 @@
     width: 40%;
     margin: 16px 4px 16px 4px;
 }
+
+.font-black-bold{
+    color: black;
+    font-weight: bolder;
+}
+
+
+.italic-text{
+    font-size: 18px;
+    font-style: italic;
+    color: #299083;
+  }
+  
+  .fw-500{
+    font-weight: 500;
+  }
+  
+  .mb-2{
+    margin-bottom: 2px;
+  }
+  
+  ol>li{ 
+    list-style-position: inside;
+  }
