@@ -1,0 +1,25 @@
+<!-- <div style="padding: 10px 5px;margin-left: auto;">
+    <button mat-raised-button (click)="openCustomerDialog()">Add customer</button>
+    <button style="margin-left: 30px;" mat-raised-button (click)="openContactsDialog()">Add contacts</button>
+ </div> -->
+<div class="customer-table">
+    <table mat-table [dataSource]="customer_Table" class="mat-elevation-z8">
+        <ng-container matColumnDef="Project Name">
+            <th mat-header-cell *matHeaderCellDef>Project Name</th>
+            <td mat-cell *matCellDef="let element">{{element.name}}</td>
+        </ng-container>
+        <ng-container matColumnDef="Company Name">
+            <th mat-header-cell *matHeaderCellDef>Company Name</th>
+            <td mat-cell *matCellDef="let element">{{element?.companyDetails[0]?.name}}</td>
+        </ng-container>
+        <ng-container matColumnDef="Quotation">
+            <th mat-header-cell *matHeaderCellDef>Quotation</th>
+            <td mat-cell *matCellDef="let element"><button mat-button (click)="openViewQuotation(element)">View</button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+</div>
