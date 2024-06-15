@@ -38,7 +38,7 @@ export class PdfViewerDialogComponent implements OnInit {
   
         pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
         heightLeft -= pageHeight;
-        while (heightLeft > 0) {
+        while (heightLeft > 0 && (index != elements.length - 1)) {
           pdf.addPage();
           pdf.addImage(imgData, 'PNG', 0, -heightLeft, imgWidth, imgHeight);
           heightLeft -= pageHeight;
