@@ -52,13 +52,18 @@ export class ProjectComponentComponent {
     dialogConfig.autoFocus = true;
     dialogConfig.maxHeight = '90vh';
     element['companyName'] = element.companyDetails[0].name;
-    let quotationDate = new Date(element.quotationDetails[0].dateOfQuotation);
+    let quotationDate = new Date(element.quotationData[0].dateOfQuotation);
     element['shortQuoteDate'] = quotationDate.toLocaleString(
       'default',
       { day: 'numeric', month: 'long', year: 'numeric' }
     );
-    dialogConfig.data = element;
-    console.log("open dialog: ", element);
+    let obj = {
+      companyDetails: element.companyDetails[0],
+      shortQuoteDate: element.shortQuoteDate,
+      companyName: element.companyDetails[0].name,
+      ...element.quotationData[0]
+    }
+    dialogConfig.data = obj;
 
     this.pdfDialog.open(PdfViewerDialogComponent, dialogConfig);
 
@@ -70,7 +75,6 @@ export class ProjectComponentComponent {
   
   getProjects = () => {
     this.appservice.getProjects().subscribe((data: CustomerTable[]) => {
-      console.log(data);
       this.customer_Table = data;
     });
   };
