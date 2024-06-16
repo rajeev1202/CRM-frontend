@@ -47,7 +47,11 @@ export class AppService {
     }
 
     getAllQuotationsList = () => {
-        return this.http.get<any>(`${this.DEV_URL}/quotation/list`);
+        return this.http.get<any>(`${this.DEV_URL}/quotation/get`);
+    }
+
+    getProjects = () => {
+        return this.http.get<any>(`${this.DEV_URL}/projects/get`);
     }
     
 }
