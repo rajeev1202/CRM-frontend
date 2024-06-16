@@ -34,4 +34,43 @@
   
   ol>li{ 
     list-style-position: inside;
+    padding: 4px 0px;
+  }
+
+  .crm-bg-img{
+    background-image: url('../../assets/images/new-quotation-bg-img.png');
+    background-size: cover;
+  }
+
+  .quo-page-size{
+    width: 595pt;
+    height: 842pt;
+  }
+
+  .p-rel{
+    position: relative;
+  }
+
+  .quo-page-padding{
+    padding: 20px 30px;
+  }
+
+  .quo-page-mar{
+    margin-bottom: 20px;
+  }
+
+  .border-1px{
+    border: 1px solid black;
+  }
+
+  .d-flex{
+    display: flex;
+  }
+  
+  .flex-col{
+    flex-direction: column;
+  }
+
+  .border-box{
+    box-sizing: border-box;
   }
