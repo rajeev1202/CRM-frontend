@@ -22,7 +22,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { CompaniesComponent } from './companies/companies.component';
 import { PdfViewerDialogComponent } from './pdf-viewer-dialog/pdf-viewer-dialog.component';
-import { ProjectComponentComponent } from './project-component/project-component.component';
+import { ProjectComponentComponent } from './project/project.component';
 
 @NgModule({
   declarations: [

@@ -6,8 +6,8 @@ import { PdfViewerDialogComponent } from '../pdf-viewer-dialog/pdf-viewer-dialog
 
 @Component({
   selector: 'app-project-component',
-  templateUrl: './project-component.component.html',
-  styleUrls: ['./project-component.component.css']
+  templateUrl: './project.component.html',
+  styleUrls: ['./project.component.css']
 })
 export class ProjectComponentComponent {
   title = 'crm-tool';
