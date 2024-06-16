@@ -127,7 +127,6 @@ export class QuotationComponent implements OnInit {
 
   openViewQuotation(element: any) {
     const dialogConfig = new MatDialogConfig();
-
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.maxHeight = '90vh';
@@ -138,7 +137,6 @@ export class QuotationComponent implements OnInit {
       { day: 'numeric', month: 'long', year: 'numeric' }
     );
     dialogConfig.data = element;
-    console.log("open dialog: ", element);
 
     this.pdfDialog.open(PdfViewerDialogComponent, dialogConfig);
 

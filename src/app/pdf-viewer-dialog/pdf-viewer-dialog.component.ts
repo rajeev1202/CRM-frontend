@@ -16,12 +16,10 @@ export class PdfViewerDialogComponent implements OnInit {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<PdfViewerDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data: any) {
-    console.log("mat constructor: ", data);
     this.quotationsData = data;
   }
 
   ngOnInit() {
-    console.log("mat nginit constructor: ", this.quotationsData);
 
   }
   convertToPDF() {
