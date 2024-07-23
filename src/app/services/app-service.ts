@@ -53,5 +53,10 @@ export class AppService {
     getProjects = () => {
         return this.http.get<any>(`${this.DEV_URL}/projects/get`);
     }
+
+    saveProjects = (reqData :any) => {
+        console.log(reqData);
+        return this.http.post<any>(`${this.DEV_URL}/projects/save`,reqData,this.httpOptions);
+    }
     
 }
