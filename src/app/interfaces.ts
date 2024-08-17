@@ -10,6 +10,7 @@ export interface CustomerTable {
   state: string;
   area: string;
   pinCode: string;
+  _id: string;
 }
 
 export interface ContactsInterface {

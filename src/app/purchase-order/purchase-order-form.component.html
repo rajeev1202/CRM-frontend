@@ -1,0 +1,38 @@
+
+<div mat-dialog-content id="purchase-order-form">
+    <h2 mat-dialog-title>Save Purchase order</h2>
+    <mat-form-field>
+        <mat-label>Company</mat-label>
+        <mat-select [(ngModel)]="data.companyName" (selectionChange)="onCustomerChange($event.value)">
+            <mat-option [value]="company" *ngFor="let company of companyList">{{company.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>project</mat-label>
+        <mat-select [(ngModel)]="data.projectName" (selectionChange)="onProjectChange($event.value)">
+            <mat-option [value]="project" *ngFor="let project of projectList">{{project.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Quotation</mat-label>
+        <mat-select [(ngModel)]="data.quotation">
+            <mat-option [value]="quotation" *ngFor="let quotation of quotationList">{{quotation.quotationNumber}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Purchase order number</mat-label>
+        <input matInput [(ngModel)]="data.poNumber">
+    </mat-form-field>
+    <input #fileUpload hidden="true" type="file" onclick="this.value=null" (change)="onFileUpload($event)" accept="application/pdf,application/msword,
+    application/vnd.openxmlformats-officedocument.wordprocessingml.document"/>
+    <button mat-raised-button style="max-width: 30%;padding: 10px;"  (click)="fileUpload.click()">Choose File</button>
+    <!-- <mat-form-field>
+        <mat-label>Purchase order doc</mat-label>
+        
+    </mat-form-field> -->
+
+</div>
+<div mat-dialog-actions>
+    <button mat-button >Cancel</button>
+    <button mat-button [mat-dialog-close]="data"  (click)="savePurchaseOrder(data)" cdkFocusInitial>Save</button>
+</div>

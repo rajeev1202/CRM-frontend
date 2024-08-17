@@ -53,5 +53,16 @@ export class AppService {
     getProjects = () => {
         return this.http.get<any>(`${this.DEV_URL}/projects/get`);
     }
-    
+    getAllPurchaseOrders = () => {
+        return this.http.get<any>(`${this.DEV_URL}/po/get`);
+    }
+    getProjectsByCustomerId = (customerId: string) => {
+        return this.http.get<any>(`${this.DEV_URL}/projects/get/${customerId}`)
+    }
+    getQuotationByProject = (customerId: string, projectId: string) => {
+        return this.http.get<any>(`${this.DEV_URL}/quotation/get/${customerId}?pid=${projectId}`)
+    }
+    savePurchaseOrder = ( reqData: any) => {
+        return this.http.post<any>(`${this.DEV_URL}/po/save`, reqData, this.httpOptions);
+    }
 }

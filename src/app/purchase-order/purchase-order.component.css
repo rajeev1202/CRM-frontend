@@ -1,0 +1,10 @@
+#purchase-order-form{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+  }
+
+button>#upload-button{
+  max-width: 30%;
+  padding: 10px;
+}

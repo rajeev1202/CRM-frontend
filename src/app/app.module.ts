@@ -23,6 +23,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { CompaniesComponent } from './companies/companies.component';
 import { PdfViewerDialogComponent } from './pdf-viewer-dialog/pdf-viewer-dialog.component';
 import { ProjectComponentComponent } from './project/project.component';
+import { PurchaseOrderComponent } from './purchase-order/purchase-order.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ProjectComponentComponent } from './project/project.component';
     CompaniesComponent,
     PdfViewerDialogComponent,
     ProjectComponentComponent,
+    PurchaseOrderComponent,
   ],
   imports: [
     BrowserModule,
