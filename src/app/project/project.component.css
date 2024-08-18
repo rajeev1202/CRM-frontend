@@ -90,3 +90,9 @@
 ol>li{ 
   list-style-position: inside;
 }
+
+#create-project-form, #create-contact-form, #create-quotation-form {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}

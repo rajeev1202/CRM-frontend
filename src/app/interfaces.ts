@@ -1,4 +1,5 @@
 export interface CustomerTable {
+  id: string;
   name: string;
   contactPerson: [ContactsInterface];
   location: string;
@@ -31,4 +32,9 @@ export interface QuotationForm {
   estimateDate: string;
   expiryDate: string;
   createdAt?: string;
+}
+
+export interface ProjectForm {
+  projectName: string;
+  company: CustomerTable;
 }
