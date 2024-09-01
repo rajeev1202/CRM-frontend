@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Create project</h1>
+<div mat-dialog-content id="create-project-form">
+  <mat-form-field>
+    <mat-label>Project name</mat-label>
+    <input matInput [(ngModel)]="data.projectName">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Company name</mat-label>
+    <mat-select [(ngModel)]="data.company">
+      <mat-option [value]="company" *ngFor="let company of companies">{{company.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+</div>

@@ -62,7 +62,7 @@ export class AppService {
     getQuotationByProject = (customerId: string, projectId: string) => {
         return this.http.get<any>(`${this.DEV_URL}/quotation/get/${customerId}?pid=${projectId}`)
     }
-    savePurchaseOrder = ( reqData: any) => {
-        return this.http.post<any>(`${this.DEV_URL}/po/save`, reqData, this.httpOptions);
+    savePurchaseOrder = ( reqData: FormData) => {
+        return this.http.post<any>(`${this.DEV_URL}/po/save`, reqData);
     }
 }

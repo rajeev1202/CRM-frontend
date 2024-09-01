@@ -4,7 +4,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { PurchaseOrder } from '../interfaces';
 import { CustomerTable } from '../interfaces';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
@@ -29,6 +28,7 @@ export class PurchaseOrderFormComponent implements OnInit {
   companyList: any = [];
   projectList: any = [];
   quotationList: any = [];
+  formData = new FormData();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -77,18 +77,19 @@ export class PurchaseOrderFormComponent implements OnInit {
    }
 
    onFileUpload(e: any){
+    if(e.target.files.length){
+      this.data['uploadedFile'] =  e.target.files[0].name;
+      this.formData.append('poDoc',e.target.files[0])
+    }
 
    }
 
    savePurchaseOrder(data: any){
-    console.log("=========== data to save", data);
-    let reqData = {
-      poNumber: data.poNumber,
-      projectId: data.projectName._id,
-      quotationId: data.quotation._id
-    }
-    this.appService.savePurchaseOrder(reqData).subscribe((res: any) => {
-      console.log("==== saved po", res);
+    this.formData.append('poNumber',data.poNumber);
+    this.formData.append('projectId',data.projectName._id);
+    this.formData.append('quotationId',data.quotation._id);
+    this.appService.savePurchaseOrder(this.formData).subscribe((res: any) => {
+      
     })
    }
 }

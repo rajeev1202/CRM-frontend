@@ -25,12 +25,8 @@
     </mat-form-field>
     <input #fileUpload hidden="true" type="file" onclick="this.value=null" (change)="onFileUpload($event)" accept="application/pdf,application/msword,
     application/vnd.openxmlformats-officedocument.wordprocessingml.document"/>
-    <button mat-raised-button style="max-width: 30%;padding: 10px;"  (click)="fileUpload.click()">Choose File</button>
-    <!-- <mat-form-field>
-        <mat-label>Purchase order doc</mat-label>
-        
-    </mat-form-field> -->
-
+    <button mat-raised-button style="max-width: 30%;padding: 10px; margin-bottom: 5px;"  (click)="fileUpload.click()">Choose File</button>
+    <span *ngIf="data.uploadedFile">{{data.uploadedFile}}</span>
 </div>
 <div mat-dialog-actions>
     <button mat-button >Cancel</button>
