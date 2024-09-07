@@ -4,17 +4,62 @@
     <mat-label>Quotation Number</mat-label>
     <input matInput formControlName="quotationNumber">
   </mat-form-field>
-  <mat-form-field>
+  <!-- <mat-form-field>
     <mat-label>For company</mat-label>
     <mat-select formControlName="companyId">
       <mat-option [value]="company.id" *ngFor="let company of companyList">{{company.name}}</mat-option>
     </mat-select>
-  </mat-form-field>
+  </mat-form-field> -->
   <mat-form-field>
+    <mat-label>For company</mat-label>
+    <mat-select formControlName="companyId" (selectionChange)="onCustomerChange($event.value)">
+      <mat-option [value]="company" *ngFor="let company of companyList">{{company.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>For Project</mat-label>
+    <mat-select formControlName="projectName">
+      <ng-container *ngIf="!(quotationForm.get('companyId')?.value); else noCompanySelected">
+        <mat-option disabled>Please select the company first</mat-option>
+      </ng-container>
+      <ng-template #noCompanySelected>
+        <ng-container *ngIf="projectList.length === 0; else hasProjects">
+          <mat-option disabled>No projects found for this company.</mat-option>
+          <mat-option>
+            <div style="margin-bottom: 20px;">
+              <button mat-button (click)="showAddProjectField()">+ Add Project</button>
+            </div>
+          </mat-option>
+        </ng-container>
+        <ng-template #hasProjects>
+          <ng-container *ngIf="projectList.length > 0">
+            <mat-option [value]="project" *ngFor="let project of projectList">{{project.name}}</mat-option>
+            <mat-option>
+              <div style="margin-bottom: 20px;">
+                <button mat-button (click)="showAddProjectField()">+ Add Project</button>
+              </div>
+            </mat-option>
+          </ng-container>         
+        </ng-template>
+      </ng-template>
+    </mat-select>
+  </mat-form-field>
+
+
+  <ng-container style="display: flex;" *ngIf="showTextarea">
+    <mat-form-field>
+      <mat-label>Add Project</mat-label>
+      <input matInput id="newProjectName" formControlName="newProjectName">
+    </mat-form-field>
+    <!-- <button mat-button (click)="addProject()">Save Project</button> -->
+  </ng-container>
+
+  <!-- <mat-form-field>
     <mat-label>Project Name</mat-label>
     <textarea matInput formControlName="projectName"></textarea>
-  </mat-form-field>
-  <mat-form-field>
+  </mat-form-field>-->
+  <mat-form-field> 
     <mat-label>Submitted To</mat-label>
     <input matInput id="submittedTo" formControlName="submittedTo">
   </mat-form-field>

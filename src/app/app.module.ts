@@ -24,6 +24,7 @@ import { CompaniesComponent } from './companies/companies.component';
 import { PdfViewerDialogComponent } from './pdf-viewer-dialog/pdf-viewer-dialog.component';
 import { ProjectComponentComponent } from './project/project.component';
 import { PurchaseOrderComponent } from './purchase-order/purchase-order.component';
+import { InvoiceComponent } from './invoice/invoice.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { PurchaseOrderComponent } from './purchase-order/purchase-order.componen
     PdfViewerDialogComponent,
     ProjectComponentComponent,
     PurchaseOrderComponent,
+    InvoiceComponent,
   ],
   imports: [
     BrowserModule,
