@@ -1,0 +1,29 @@
+<div class="invoice">
+    <table mat-table class="mat-elevation-z8">
+        <ng-container matColumnDef="Company">
+            <th mat-header-cell *matHeaderCellDef>Company</th>
+            <td mat-cell *matCellDef="let invoice"> {{ invoice.company }} </td>
+        </ng-container>
+        <ng-container matColumnDef="Quotation">
+            <th mat-header-cell *matHeaderCellDef>Quotation</th>
+            <td mat-cell *matCellDef="let invoice"> {{ invoice.quotation }} </td>
+        </ng-container>
+        <ng-container matColumnDef="Purchase Order">
+            <th mat-header-cell *matHeaderCellDef>Purchase Order</th>
+            <td mat-cell *matCellDef="let invoice"> {{ invoice.purchaseOrder }} </td>
+        </ng-container>
+        <ng-container matColumnDef="Status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let invoice"> {{ invoice.status }} </td>
+        </ng-container>
+        <ng-container matColumnDef="Generate Quotation">
+            <th mat-header-cell *matHeaderCellDef>Generate Quotation</th>
+            <td mat-cell *matCellDef="let invoice">
+                <button >Generate</button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let invoice; columns: displayedColumns"></tr>
+    </table>
+</div>

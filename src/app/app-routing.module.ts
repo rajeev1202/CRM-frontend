@@ -4,6 +4,7 @@ import { QuotationComponent } from './quotation/quotation.component';
 import { CompaniesComponent } from './companies/companies.component';
 import { ProjectComponentComponent } from './project/project.component';
 import { PurchaseOrderComponent } from './purchase-order/purchase-order.component';
+import { InvoiceComponent } from './invoice/invoice.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'purchase-order',
     component: PurchaseOrderComponent
+  },
+  {
+    path:'invoice',
+    component: InvoiceComponent
   },
 
 ];

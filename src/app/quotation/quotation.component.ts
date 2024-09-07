@@ -28,6 +28,7 @@ import html2canvas from 'html2canvas';
 import { AppService } from '../services/app-service';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { PdfViewerDialogComponent } from '../pdf-viewer-dialog/pdf-viewer-dialog.component';
+import { CustomerTable } from '../interfaces';
 
 @Component({
   selector: 'app-quotation',
@@ -174,12 +175,21 @@ export class QuotationData implements OnInit {
     public appService: AppService
   ) {}
   companyList: any = [];
+  projectList: any = [];
   ValidCurrencyCode = VALID_CURRENCY_CODE;
+
+  showTextarea = false;
+  textareaContent: string = "initial";
+  showAddProjectField() {
+    this.showTextarea = true;
+
+  }
 
   quotationForm = this.fb.group({
     quotationNumber: this.fb.control(''),
     companyId: this.fb.control(''),
     projectName: this.fb.control(''),
+    newProjectName: this.fb.control(''),
     submittedTo: this.fb.control(''),
     currency: this.fb.control(''),
     sowNumber: this.fb.control(''),
@@ -227,11 +237,40 @@ export class QuotationData implements OnInit {
     return this.quotationForm.get('inputDocReceived') as FormArray;
   }
 
-  getCompanyList(): void {
-    this.appService.getCompaniesList().subscribe((result) => {
-      this.companyList = result;
+ 
+
+  getCompanyList() {
+    this.appService.getAllCompanies().subscribe((res: CustomerTable[]) => {
+      console.log('company list dataa', res);
+      this.companyList = res.map((data) => {
+        return { _id: data._id, name: data.name };
+      });
     });
   }
+  getProjectsOfCustomer(customerId: string) {
+    this.appService.getProjectsByCustomerId(customerId).subscribe((res: any) => {
+      console.log("==== data", this.data);
+      console.log("=======r es", res);
+      this.projectList = res.map((data: any) => {
+        return { _id: data._id, name: data.name }
+      })
+    })
+  }
+  data(arg0: string, data: any) {
+    throw new Error('Method not implemented.');
+  }
+
+  onCustomerChange(e: any) {
+    console.log("======== on customer changes", e);
+    if (e._id) {
+      this.getProjectsOfCustomer(e._id);
+    }
+  }
+
+
+  // addProject() {
+  //   this.projectList.push(this.fb.group({ name: this.fb.control('') }));
+  // }
 
   addActivities(): void {
     this.activities.push(
